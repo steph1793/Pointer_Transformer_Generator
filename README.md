@@ -18,23 +18,23 @@ https://github.com/steph1793/CNN-DailyMail-Bin-To-TFRecords
 
 ## Step 2 : launch the project : 
 
-**python main.py --max_enc_len=400** \ <br>
+**python main.py --max_enc_len=400 \ <br>
 --max_dec_len=100 \ <br>
---batch_size=16 \<br>
---vocab_size=50000 \<br>
---num_layers=3 \<br>
---model_depth=512 \<br>
---num_heads=8 \<br>
---dff=2048 \<br>
---seed=123 \<br>
---log_step_count_steps=1 \<br>
---max_steps=230000 \<br>
---mode=train \<br>
---save_summary_steps=10000 \<br>
---checkpoints_save_steps=10000 \<br>
---model_dir=model_folder \<br>
---data_dir=data_folder \<br>
---vocab_path=vocab \<br>**
+--batch_size=16 \ <br>
+--vocab_size=50000 \ <br>
+--num_layers=3 \ <br>
+--model_depth=512 \ <br>
+--num_heads=8 \ <br>
+--dff=2048 \ <br>
+--seed=123 \ <br>
+--log_step_count_steps=1 \ <br>
+--max_steps=230000 \ <br>
+--mode=train \ <br>
+--save_summary_steps=10000 \ <br>
+--checkpoints_save_steps=10000 \ <br>
+--model_dir=model_folder \ <br>
+--data_dir=data_folder \ <br>
+--vocab_path=vocab \ <br>**
 
 PS : Feel free to change some of the hyperparameters<br>
 python main.py --help , for more details on the hyperparameters
