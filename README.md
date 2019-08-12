@@ -40,6 +40,10 @@ PS : Feel free to change some of the hyperparameters<br>
 python main.py --help , for more details on the hyperparameters
 
 
+## Bonus 
+You can run the project on google colab with thus notebook <br>
+PS : I suppose, you have your data on your drive
+
 ## Requirements
 - python >= 3.6
 - tensorflow 2.0.1-beta
