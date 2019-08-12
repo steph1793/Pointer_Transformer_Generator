@@ -1,4 +1,4 @@
-# Pointer_Transformer_Generator tensorflow 2.0.1-beta
+# Pointer_Transformer_Generator tensorflow 2.0.0-beta1
 
 For the abstractive summarization task, I wanted to experiment the transformer model. I recreated a transformer model (thanks to tensorflow transformer tutorial) and added a pointer module (have a look at this paper for more informations on the pointer generator network : https://arxiv.org/abs/1704.04368 ).
 
