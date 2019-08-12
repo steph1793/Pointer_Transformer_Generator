@@ -41,7 +41,8 @@ python main.py --help , for more details on the hyperparameters
 
 
 ## Bonus 
-You can run the project on google colab with thus notebook <br>
+You can run the project on google colab with this notebook <br>
+https://colab.research.google.com/drive/1rRA7HqGJAMIz9K7h6-_fhNi4M0yBF72Q#scrollTo=EkYCSmWOE_CF <br>
 PS : I suppose, you have your data on your drive
 
 ## Requirements
