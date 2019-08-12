@@ -18,7 +18,7 @@ https://github.com/steph1793/CNN-DailyMail-Bin-To-TFRecords
 
 ## Step 2 : launch the project : 
 
-**python main.py --max_enc_len=400 \<br>
+**python main.py --max_enc_len=400** \<br>
 --max_dec_len=100 \<br>
 --batch_size=16 \<br>
 --vocab_size=50000 \<br>
