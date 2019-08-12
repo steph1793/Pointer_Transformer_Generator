@@ -30,9 +30,9 @@ def main():
 	
 	parser.add_argument("--max_steps",default=230000, help="Max steps for training")
 		
-	parser.add_argument("--save_summary_steps", default=10000, help="Save summaries every N steps")
+	parser.add_argument("--save_summary_steps", default=10000, help="Save summaries every N steps", type=int)
 	
-	parser.add_argument("--checkpoints_save_steps", default=10000, help="Save checkpoints every N steps")
+	parser.add_argument("--checkpoints_save_steps", default=10000, help="Save checkpoints every N steps", type=int)
 	
 	parser.add_argument("--mode", help="training, eval or test options")
 
