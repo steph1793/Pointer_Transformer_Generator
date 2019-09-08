@@ -64,7 +64,7 @@ def test(model, params):
 	checkpoint_dir = "{}/checkpoint".format(params["model_dir"])
 	logdir = "{}/logdir".format(params["model_dir"])
 
-	pred = model.predict(input_fn = lambda :  batcher("tfrecords_finished_files/test", "tfrecords_finished_files/vocab", params), 
+	pred = model.predict(input_fn = lambda :  batcher(params["data_dir"], params["vocab_path"], params), 
 		yield_single_examples=False)
 
 	yield next(pred)
