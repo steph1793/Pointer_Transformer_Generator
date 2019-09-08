@@ -1,6 +1,7 @@
 import tensorflow as tf
 from tensorflow.python.training import training_util
 from training_helper import train_model
+from predict_helper import predict
 from batcher import batcher
 from transformer import Transformer
 
@@ -12,15 +13,19 @@ def my_model(features, labels, mode, params):
 		vocab_size=params["vocab_size"], batch_size=params["batch_size"])
 
 
-	assert mode == tf.estimator.ModeKeys.TRAIN
+	if mode == tf.estimator.ModeKeys.TRAIN:
+		increment_step = training_util._increment_global_step(1)
+		train_op, loss = train_model(features, labels, params, transformer )
+		tf.summary.scalar("loss", loss)
+		estimator_spec = tf.estimator.EstimatorSpec(mode, loss=loss, train_op=tf.group([train_op, increment_step]))
+	
 
-	increment_step = training_util._increment_global_step(1)
-	train_op, loss = train_model(features, labels, params, transformer )
-	tf.summary.scalar("loss", loss)
+	elif mode == tf.estimator.ModeKeys.PREDICT :
+		predictions, attn_weights = predict(features, params, transformer)
+		estimator_spec = tf.estimator.EstimatorSpec(mode,  predictions={"predictions":predictions})
+  
 	print(transformer.summary())
-
-	return tf.estimator.EstimatorSpec(mode, loss=loss, train_op=tf.group([train_op, increment_step]))
-
+	return estimator_spec
 
 
 def build_model(params):
@@ -37,6 +42,7 @@ def build_model(params):
 
 
 def train(model, params):
+	assert params["training"], "change training mode to true"
 	checkpoint_dir = "{}/checkpoint".format(params["model_dir"])
 	logdir = "{}/logdir".format(params["model_dir"])
 
@@ -52,5 +58,13 @@ def train(model, params):
 def eval(model, params):
 	pass
 
+
 def test(model, params):
-	pass
+	assert not params["training"], "change training mode to false"
+	checkpoint_dir = "{}/checkpoint".format(params["model_dir"])
+	logdir = "{}/logdir".format(params["model_dir"])
+
+	pred = model2.predict(input_fn = lambda :  batcher("tfrecords_finished_files/test", "tfrecords_finished_files/vocab", hpm), 
+		yield_single_examples=False)
+
+	yield next(pred)

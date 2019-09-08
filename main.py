@@ -1,6 +1,6 @@
 import tensorflow as tf
 import argparse
-from build_eval_test import build_model, train
+from build_eval_test import build_model, train, test
 import os
 
 def main():
@@ -67,8 +67,9 @@ def main():
 		train(model, params)
 	elif params["eval"]:
 		pass
-	elif params["test"]:
-		pass
+	elif not params["training"]:
+		for ex in test(model, params):
+			print(ex)
 
 
 if __name__ == "__main__":
