@@ -1,4 +1,5 @@
 import tensorflow as tf
+from utils import create_masks
 
 def predict(features, params, model):
   
