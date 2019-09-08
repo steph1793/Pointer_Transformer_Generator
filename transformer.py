@@ -9,6 +9,7 @@ class Encoder(tf.keras.layers.Layer):
 		super(Encoder, self).__init__()
 		self.d_model = d_model
 		self.num_layers = num_layers
+		
 		self.enc_layers = [EncoderLayer(d_model, num_heads, dff, rate) 
 							for _ in range(num_layers)]
 		self.dropout = tf.keras.layers.Dropout(rate)
@@ -29,6 +30,7 @@ class Decoder(tf.keras.layers.Layer):
 		self.d_model = d_model
 		self.num_layers = num_layers
 		self.num_heads = num_heads
+		self.depth = d_model // self.num_heads
 		self.dec_layers = [DecoderLayer(d_model, num_heads, dff, rate) 
 							for _ in range(num_layers)]
 		self.dropout = tf.keras.layers.Dropout(rate)
@@ -56,7 +58,7 @@ class Decoder(tf.keras.layers.Layer):
 
 		#context vectors
 		enc_out_shape = tf.shape(enc_output)
-		context = tf.reshape(enc_output,(enc_out_shape[0], enc_out_shape[1], self.num_heads, self.d_model) ) # shape : (batch_size, input_seq_len, num_heads, depth)
+		context = tf.reshape(enc_output,(enc_out_shape[0], enc_out_shape[1], self.num_heads, self.depth) ) # shape : (batch_size, input_seq_len, num_heads, depth)
 		context = tf.transpose(context, [0,2,1,3]) # (batch_size, num_heads, input_seq_len, depth)
 		context = tf.expand_dims(context, axis=2)  # (batch_size, num_heads, 1, input_seq_len, depth)
 
@@ -65,7 +67,7 @@ class Decoder(tf.keras.layers.Layer):
 		context = context * attn # (batch_size, num_heads, target_seq_len, input_seq_len, depth)
 		context = tf.reduce_sum(context, axis=3) # (batch_size, num_heads, target_seq_len, depth)
 		context = tf.transpose(context, [0,2,1,3]) # (batch_size, target_seq_len, num_heads, depth)
-		context = tf.reshape(context, (tf.shape(context)[0], tf.shape(context)[1], self.d_model*self.num_heads)) # (batch_size, target_seq_len, d_model)
+		context = tf.reshape(context, (tf.shape(context)[0], tf.shape(context)[1], self.d_model)) # (batch_size, target_seq_len, d_model)
 
 		# P_gens computing
 		a = self.Wx(embed_x)
