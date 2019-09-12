@@ -60,7 +60,7 @@ def train(params):
 
 	ckpt.restore(ckpt_manager.latest_checkpoint)
 	if ckpt_manager.latest_checkpoint:
-		print("Restored from {}".format(manager.latest_checkpoint))
+		print("Restored from {}".format(ckpt_manager.latest_checkpoint))
 	else:
 		print("Initializing from scratch.")
 
