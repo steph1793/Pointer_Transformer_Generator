@@ -65,7 +65,7 @@ def train(params):
 		print("Initializing from scratch.")
 
 	tf.compat.v1.logging.info("Starting the training ...")
-	train_model(transformer, b, params, ckpt_object, ckpt_manager)
+	train_model(transformer, b, params, ckpt, ckpt_manager)
 	
 
 
