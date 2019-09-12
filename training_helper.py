@@ -52,7 +52,7 @@ def train_model(model, batcher, params):
 
 	for i, batch in enumerate(batcher):
 		t0 = time.time()
-		train_step(features, labels, params, model, optimizer, loss_object, train_loss_metric)
+		train_step(batch[0], batch[1], params, model, optimizer, loss_object, train_loss_metric)
 		t1 = time.time()
 		print("step {}, time : {}, loss: {}".format(i, t1-t0, train_loss_metric.result()))
 
