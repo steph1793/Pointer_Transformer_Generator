@@ -1,5 +1,6 @@
 import tensorflow as tf
 from utils import create_masks
+import time
 
 class CustomSchedule(tf.keras.optimizers.schedules.LearningRateSchedule):
 	def __init__(self, d_model, warmup_steps=4000):
@@ -27,8 +28,8 @@ def loss_function(loss_object, real, pred):
 	return tf.reduce_mean(loss_)
 
 
-
-def train_step(features, labels, params, model, optimizer, loss_object):
+@tf.function
+def train_step(features, labels, params, model, optimizer, loss_object, train_loss_metric):
   
 	enc_padding_mask, combined_mask, dec_padding_mask = create_masks(features["enc_input"], labels["dec_input"])
 
@@ -40,13 +41,18 @@ def train_step(features, labels, params, model, optimizer, loss_object):
 		loss = loss_function(loss_object, labels["dec_target"], output)
 
 	gradients = tape.gradient(loss, model.trainable_variables)    
-	return optimizer.apply_gradients(zip(gradients, model.trainable_variables)), loss
+	optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+	train_loss_metric(loss)
 
-
-def train_model(features, labels, params, model):
+def train_model(model, batcher, params):
 	learning_rate = CustomSchedule(params["model_depth"])
 	optimizer = tf.keras.optimizers.Adam(learning_rate, beta_1=0.9, beta_2=0.98, epsilon=1e-9)  
 	loss_object = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False, reduction='none')
+	train_loss_metric = tf.keras.metrics.Mean(name="train_loss_metric")
 
-	return train_step(features, labels, params, model, optimizer, loss_object)
+	for i, batch in eumerate(batcher)
+		t0 = time.time()
+		train_step(features, labels, params, model, optimizer, loss_object, train_loss_metric)
+		t1 = time.time()
+		print("step {}, time : {}, loss: {}".format(i, t1-t0, train_loss_metric.result()))
 

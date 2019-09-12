@@ -8,9 +8,7 @@ from transformer import Transformer
 
 
 def my_model(features, labels, mode, params):
-	transformer = Transformer(
-		num_layers=params["num_layers"], d_model=params["model_depth"], num_heads=params["num_heads"], dff=params["dff"], 
-		vocab_size=params["vocab_size"], batch_size=params["batch_size"])
+	
 
 
 	if mode == tf.estimator.ModeKeys.TRAIN:
@@ -41,18 +39,24 @@ def build_model(params):
 					params=params, config=config, model_dir=params["model_dir"] )
 
 
-def train(model, params):
+def train(params):
 	assert params["training"], "change training mode to true"
+
+	tf.compat.v1.logging.info("Building the model ...")
+	transformer = Transformer(
+		num_layers=params["num_layers"], d_model=params["model_depth"], num_heads=params["num_heads"], dff=params["dff"], 
+		vocab_size=params["vocab_size"], batch_size=params["batch_size"])
+
+
+	tf.compat.v1.logging.info("Creating the batcher ...")
+	b = batcher(params["data_dir"], params["vocab_path"], params)
+
 	checkpoint_dir = "{}/checkpoint".format(params["model_dir"])
 	logdir = "{}/logdir".format(params["model_dir"])
 
-	model.train(input_fn = lambda : batcher(params["data_dir"], params["vocab_path"], params), 
-				max_steps=params["max_steps"],
-				hooks=[tf.estimator.CheckpointSaverHook(
-					checkpoint_dir,
-					save_steps=params["checkpoints_save_steps"]
-				), tf.estimator.SummarySaverHook(save_steps=params["save_summary_steps"], output_dir=logdir, scaffold=tf.compat.v1.train.Scaffold())])
-
+	tf.compat.v1.logging.info("Starting the training ...")
+	train_model(transformer, b, params)
+	
 
 
 def eval(model, params):
