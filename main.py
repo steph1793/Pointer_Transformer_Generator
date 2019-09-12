@@ -64,7 +64,7 @@ def main():
 	model = build_model(params)
 
 	if params["training"]:
-		train(model, params)
+		train( params)
 	elif params["eval"]:
 		pass
 	elif not params["training"]:
