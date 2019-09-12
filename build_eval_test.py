@@ -4,6 +4,7 @@ from training_helper import train_model
 from predict_helper import predict
 from batcher import batcher
 from transformer import Transformer
+import os
 
 
 
@@ -51,11 +52,20 @@ def train(params):
 	tf.compat.v1.logging.info("Creating the batcher ...")
 	b = batcher(params["data_dir"], params["vocab_path"], params)
 
-	checkpoint_dir = "{}/checkpoint".format(params["model_dir"])
+	tf.compat.v1.logging.info("Creating the checkpoint manager")
 	logdir = "{}/logdir".format(params["model_dir"])
+	checkpoint_dir = "{}/checkpoint".format(params["model_dir"])
+	ckpt = tf.train.Checkpoint(step=tf.Variable(1), transformer=transformer)
+	ckpt_manager = tf.train.CheckpointManager(ckpt, checkpoint_dir, max_to_keep=11)
+
+	ckpt.restore(ckpt_manager.latest_checkpoint)
+	if ckpt_manager.latest_checkpoint:
+		print("Restored from {}".format(manager.latest_checkpoint))
+	else:
+		print("Initializing from scratch.")
 
 	tf.compat.v1.logging.info("Starting the training ...")
-	train_model(transformer, b, params)
+	train_model(transformer, b, params, ckpt_object, ckpt_manager)
 	
 
 

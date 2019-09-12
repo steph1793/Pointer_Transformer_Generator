@@ -44,15 +44,22 @@ def train_step(features, labels, params, model, optimizer, loss_object, train_lo
 	optimizer.apply_gradients(zip(gradients, model.trainable_variables))
 	train_loss_metric(loss)
 
-def train_model(model, batcher, params):
+def train_model(model, batcher, params, ckpt, ckpt_manager):
 	learning_rate = CustomSchedule(params["model_depth"])
 	optimizer = tf.keras.optimizers.Adam(learning_rate, beta_1=0.9, beta_2=0.98, epsilon=1e-9)  
 	loss_object = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False, reduction='none')
 	train_loss_metric = tf.keras.metrics.Mean(name="train_loss_metric")
 
-	for i, batch in enumerate(batcher):
-		t0 = time.time()
-		train_step(batch[0], batch[1], params, model, optimizer, loss_object, train_loss_metric)
-		t1 = time.time()
-		print("step {}, time : {}, loss: {}".format(i, t1-t0, train_loss_metric.result()))
-
+	try:
+		for batch in batcher:
+			t0 = time.time()
+			train_step(batch[0], batch[1], params, model, optimizer, loss_object, train_loss_metric)
+			t1 = time.time()
+			ckpt.step.assign_add(1)
+			print("step {}, time : {}, loss: {}".format(ckpt.step, t1-t0, train_loss_metric.result()))
+			if int(ckpt.step) % 10000 ==0 :
+				ckpt_manager.save()
+				print("Saved checkpoint for step {}".format(int(ckpt.step)))
+	except KeyboardInterrupt:
+		ckpt_manager.save()
+		print("Saved checkpoint for step {}".format(int(ckpt.step)))
