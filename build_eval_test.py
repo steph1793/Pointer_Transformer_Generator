@@ -55,7 +55,7 @@ def train(params):
 	tf.compat.v1.logging.info("Creating the checkpoint manager")
 	logdir = "{}/logdir".format(params["model_dir"])
 	checkpoint_dir = "{}/checkpoint".format(params["model_dir"])
-	ckpt = tf.train.Checkpoint(step=tf.Variable(1), transformer=transformer)
+	ckpt = tf.train.Checkpoint(step=tf.Variable(0), transformer=transformer)
 	ckpt_manager = tf.train.CheckpointManager(ckpt, checkpoint_dir, max_to_keep=11)
 
 	ckpt.restore(ckpt_manager.latest_checkpoint)

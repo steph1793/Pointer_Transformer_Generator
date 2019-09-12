@@ -55,11 +55,13 @@ def train_model(model, batcher, params, ckpt, ckpt_manager):
 			t0 = time.time()
 			train_step(batch[0], batch[1], params, model, optimizer, loss_object, train_loss_metric)
 			t1 = time.time()
-			ckpt.step.assign_add(1)
-			print("step {}, time : {}, loss: {}".format(ckpt.step, t1-t0, train_loss_metric.result()))
+			
+			print("step {}, time : {}, loss: {}".format(int(ckpt.step), t1-t0, train_loss_metric.result()))
 			if int(ckpt.step) % 10000 ==0 :
-				ckpt_manager.save()
+				ckpt_manager.save(checkpoint_number=int(ckpt.step))
 				print("Saved checkpoint for step {}".format(int(ckpt.step)))
+			ckpt.step.assign_add(1)
+			
 	except KeyboardInterrupt:
-		ckpt_manager.save()
+		ckpt_manager.save(int(ckpt.step))
 		print("Saved checkpoint for step {}".format(int(ckpt.step)))
