@@ -50,7 +50,7 @@ def train_model(model, batcher, params):
 	loss_object = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False, reduction='none')
 	train_loss_metric = tf.keras.metrics.Mean(name="train_loss_metric")
 
-	for i, batch in eumerate(batcher)
+	for i, batch in eumerate(batcher):
 		t0 = time.time()
 		train_step(features, labels, params, model, optimizer, loss_object, train_loss_metric)
 		t1 = time.time()
