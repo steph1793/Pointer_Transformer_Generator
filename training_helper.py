@@ -28,7 +28,6 @@ def loss_function(loss_object, real, pred):
 	return tf.reduce_mean(loss_)
 
 
-@tf.function
 def train_step(features, labels, params, model, optimizer, loss_object, train_loss_metric):
   
 	enc_padding_mask, combined_mask, dec_padding_mask = create_masks(features["enc_input"], labels["dec_input"])
