@@ -10,13 +10,6 @@ import os
 
 def my_model(features, labels, mode, params):
 	
-
-
-	if mode == tf.estimator.ModeKeys.TRAIN:
-		increment_step = training_util._increment_global_step(1)
-		train_op, loss = train_model(features, labels, params, transformer )
-		tf.summary.scalar("loss", loss)
-		estimator_spec = tf.estimator.EstimatorSpec(mode, loss=loss, train_op=tf.group([train_op, increment_step]))
 	
 
 	elif mode == tf.estimator.ModeKeys.PREDICT :

@@ -61,15 +61,12 @@ def main():
 
 
 
-	model = build_model(params)
-
 	if params["training"]:
 		train( params)
 	elif params["eval"]:
 		pass
 	elif not params["training"]:
-		for ex in test(model, params):
-			print(ex)
+		pass
 
 
 if __name__ == "__main__":

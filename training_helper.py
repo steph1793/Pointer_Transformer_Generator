@@ -57,7 +57,7 @@ def train_model(model, batcher, params, ckpt, ckpt_manager):
 			t1 = time.time()
 			
 			print("step {}, time : {}, loss: {}".format(int(ckpt.step), t1-t0, train_loss_metric.result()))
-			if int(ckpt.step) % 10000 ==0 :
+			if int(ckpt.step) % params["checkpoints_save_steps"] ==0 :
 				ckpt_manager.save(checkpoint_number=int(ckpt.step))
 				print("Saved checkpoint for step {}".format(int(ckpt.step)))
 			ckpt.step.assign_add(1)
