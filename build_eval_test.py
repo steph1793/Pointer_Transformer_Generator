@@ -10,11 +10,8 @@ import os
 
 def my_model(features, labels, mode, params):
 	
-	
-
-	elif mode == tf.estimator.ModeKeys.PREDICT :
-		predictions, attn_weights = predict(features, params, transformer)
-		estimator_spec = tf.estimator.EstimatorSpec(mode,  predictions={"predictions":predictions})
+	predictions, attn_weights = predict(features, params, transformer)
+	estimator_spec = tf.estimator.EstimatorSpec(mode,  predictions={"predictions":predictions})
   
 	print(transformer.summary())
 	return estimator_spec
