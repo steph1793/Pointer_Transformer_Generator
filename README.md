@@ -43,7 +43,7 @@ python main.py --help , for more details on the hyperparameters
 
 ## Requirements
 - python >= 3.6
-- tensorflow 2.0.1-beta
+- tensorflow 2.0.0
 - argparse
 - os
 - glob
