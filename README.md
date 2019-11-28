@@ -1,4 +1,4 @@
-# Pointer_Transformer_Generator tensorflow 2.0.0-beta1
+# Pointer_Transformer_Generator tensorflow 2.0.0
 
 For the abstractive summarization task, I wanted to experiment the transformer model. I recreated a transformer model (thanks to tensorflow transformer tutorial) and added a pointer module (have a look at this paper for more informations on the pointer generator network : https://arxiv.org/abs/1704.04368 ).
 
@@ -40,10 +40,6 @@ PS : Feel free to change some of the hyperparameters<br>
 python main.py --help , for more details on the hyperparameters
 
 
-## Bonus 
-You can run the project on google colab with this notebook <br>
-https://colab.research.google.com/drive/1rRA7HqGJAMIz9K7h6-_fhNi4M0yBF72Q#scrollTo=EkYCSmWOE_CF <br>
-PS : I suppose, you have your data on your drive
 
 ## Requirements
 - python >= 3.6
